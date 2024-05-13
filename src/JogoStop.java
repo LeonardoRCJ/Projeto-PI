@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -7,35 +6,35 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class JogoStop {
-    private static final int NUM_CATEGORIAS = 3;
     private static final int NUM_RODADAS = 5;
-    private static final int TEMPO_LIMITE_SEGUNDOS = 60;
 
+    static Scanner ler = new Scanner(System.in);
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
 
         System.out.print("Digite o número de jogadores: ");
-        int numJogadores = scanner.nextInt();
+        int numJogadores = ler.nextInt();
 
         List<Jogador> jogadores = new ArrayList<>();
-        for (int i = 0; i < numJogadores; i++) {
-            System.out.print("Nome do jogador " + (i + 1) + ": ");
-            String nome = scanner.nextLine();
+        int volta =  0;
+        do {
+            System.out.print("Nome do jogador: ");
+  
+            String nome = ler.next();
             jogadores.add(new Jogador(nome));
-        }
+            volta++;
+        }while(volta < numJogadores);
 
-        String[] categorias = {"Nome", "Lugar", "Objeto"};
+        String[] categorias = {"Nome", "CEP", "Objeto", "Time", "Marca"};
 
         Jogo jogo = new Jogo(jogadores, categorias);
 
         jogo.jogar();
 
-        scanner.close();
     }
 }
 
 class Jogo {
-    private static final int NUM_RODADAS = 0;
+    private static final int NUM_RODADAS = 5;
     private List<Jogador> jogadores;
     private String[] categorias;
 
@@ -61,10 +60,10 @@ class Jogo {
                 System.out.println("\nCategoria: " + categoria);
 
                 for (Jogador jogador : jogadores) {
-                    System.out.println("Vez de " + jogador.getNome() + ". Pressione Enter para iniciar o temporizador.");
-                    scanner.nextLine();
+                    System.out.println("Vez de " + jogador.getNome() + " Pressione Enter para iniciar o temporizador.");
+                    scanner.next();
                     System.out.println("Temporizador iniciado! Digite um " + categoria + " que comece com a letra '" + letra + "': ");
-                    String palavra = scanner.nextLine();
+                    String palavra = scanner.next();
 
                     jogador.adicionarResposta(categoria, palavra);
                 }
@@ -83,7 +82,10 @@ class Jogo {
 
 class Jogador {
     private String nome;
-    private Map<String, String> respostas;
+    private Map<String, String> resposta = new HashMap<>();
+    private HashMap respostas;
+;
+
 
     public Jogador(String nome) {
         this.nome = nome;
