@@ -82,25 +82,13 @@ class Jogo {
 
 class Jogador {
     private String nome;
-    private Map<String, String> resposta = new HashMap<>();
-    private HashMap respostas;
-;
-
 
     public Jogador(String nome) {
         this.nome = nome;
-        this.respostas = new HashMap<>();
     }
 
     public String getNome() {
         return nome;
     }
 
-    public void adicionarResposta(String categoria, String resposta) {
-        respostas.put(categoria, resposta);
-    }
-
-    public Map<String, String> getRespostas() {
-        return respostas;
-    }
 }
