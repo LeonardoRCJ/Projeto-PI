@@ -6,6 +6,10 @@ import java.util.Scanner;
 public class Jogostop2 {
     static Scanner ler = new Scanner(System.in);
     static Random sorteador = new Random();
+    static Integer num_Rodadas = 3;
+    static Integer pontMax = 10;
+    static Integer pontMet = 5;
+    static Integer pontMin = 0;
 
     public static void main(String[] args) {
         Jogar();
@@ -13,8 +17,7 @@ public class Jogostop2 {
     }
 
     public static void Jogar(){
-
-
+    
             System.out.println("Digite a quantidade de jogadores: ");
             int qtdJogadores = ler.nextInt();
             String[] jogadores = new String[qtdJogadores];
@@ -28,16 +31,17 @@ public class Jogostop2 {
             int qtdCategorias = ler.nextInt();
             
             String [] categorias = new String[qtdCategorias];
-            for (int i = 0; i < qtdCategorias; i++) {
-                System.out.println("Informe quais categorias você deseja: ");
-                categorias[i] = ler.next();
-                ler.nextLine();
-            }
+                for (int i = 0; i < qtdCategorias; i++) {
+                    System.out.println("Informe quais categorias você deseja: ");
+                    categorias[i] = ler.next();
+                    ler.nextLine();
+             }
         
             char letra = (char) (sorteador.nextInt(26) + 'A');
             System.out.println("A letra sorteada é: " + letra);
 
             List<String>respostas = new ArrayList<>();
+            
 
             for (String jogador : jogadores) {
                 for (String categoria : categorias) {
@@ -46,21 +50,21 @@ public class Jogostop2 {
                     respostas.add(string);
                 }
             }
+            System.out.println(respostas);
 
-           Integer[] scores = new Integer[jogadores.length];
-
-
+ 
                 for (String resposta : respostas) {
                     if (resposta.charAt(0) == letra) {
-                        if (resposta.length() == 1) {
+                        if (resposta.length() <= 1) {
                             
                         }else{
-
+                            
                         }
                     }else{
-
+ 
                     }
                 }
+            
     }
-        
 }
+        
