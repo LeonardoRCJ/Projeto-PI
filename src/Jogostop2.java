@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -6,28 +7,24 @@ import java.util.Scanner;
 public class Jogostop2 {
     static Scanner ler = new Scanner(System.in);
     static Random sorteador = new Random();
-    static Integer num_Rodadas = 3;
-    static Integer pontMax = 10;
-    static Integer pontMet = 5;
-    static Integer pontMin = 0;
 
     public static void main(String[] args) {
-        for (int rodada = 0; rodada < num_Rodadas; rodada++) {
+      
             Jogar();
-        }
     }
 
     public static void Jogar(){
             System.out.println("Digite a quantidade de jogadores: ");
             int qtdJogadores = ler.nextInt();
             
-            String[] jogadores = new String[qtdJogadores];
+            List<Jogador> jogadores = new ArrayList<>();
             int[] pontos = new int[qtdJogadores];
 
     
-            for (int i = 0; i < jogadores.length; i++) {
+            for (int i = 0; i < jogadores.size(); i++) {
                 System.out.println("Informe os nomes dos jogadores: ");
-                jogadores[i] = ler.next();
+                String jogador = ler.nextLine();
+                jogadores.add(new Jogador(jogador)); 
             }
     
             System.out.println("Informe quantas categorias você deseja: ");
@@ -43,11 +40,14 @@ public class Jogostop2 {
             char letra = (char) (sorteador.nextInt(26) + 'A');
             System.out.println("A letra sorteada é: " + letra);
 
-            List<String[]> respostas = new ArrayList<>();
-            
+         
+            List<List<String>> respostas = new ArrayList<>();
+            for (int i = 0; i < jogadores.size(); i++) {
+                respostas.add(new ArrayList<>());
+            }
 
-            for (int i = 0; i < jogadores.length; i++) {
-                String jogador = jogadores[i];
+            for (int i = 0; i < jogadores.size(); i++) {
+                String jogador = jogadores.get(new Jogador(nome));
                 String[] respJog = new String[categorias.length];
 
                 for (int c = 0; c < categorias.length; c++) {
@@ -60,38 +60,57 @@ public class Jogostop2 {
 
                 respostas.add(respJog);
             }
+    
+            for (int categoriaIndex = 0; categoriaIndex < categorias.length; categoriaIndex++) {
+            List<String> todasRespostas = new ArrayList<>();
 
-            System.out.println(respostas);
-
-
-            for (int j = 0; j< jogadores.length; j++) {
-                String jog = jogadores[j];
-                String[] resps = respostas.get(j);
-
-                int pontosJog = 0;
-                //
-                //
-                //
-
-                pontos[j] += pontosJog;
-
+            // Recolhe todas as respostas para a categoria atual
+            for (List<String> respostaJogador : respostas) {
+                todasRespostas.add(respostaJogador.get(categoriaIndex));
             }
-                for (String resposta : respostas) {
-                    for (String string : respostas) {
-                        if (resposta.charAt(0) == letra) {
-                            if (resposta.length() > 2) {
-                                if (resposta.equalsIgnoreCase(string)) {
-                                    pontos += pontMet;
-                                }else{
-                                pontos += pontMax;
-                                }
-                            }else{
-                                pontos += pontMin;
-                            }
-                        }else{
-                            pontos += pontMin;
-                        }
+
+            // Conta as respostas por categoria
+            List<String> respostasUnicas = new ArrayList<>();
+            List<String> respostasDuplicadas = new ArrayList<>();
+
+            for (String resposta : todasRespostas) {
+                if (Collections.frequency(todasRespostas, resposta) == 1) {
+                    respostasUnicas.add(resposta);
+                } else {
+                    if (!respostasDuplicadas.contains(resposta)) {
+                        respostasDuplicadas.add(resposta);
                     }
-                }        
+                }
+            }
+            int[] pontuacoes = new int[qtdJogadores];
+            // Calcula os pontos para cada jogador
+            for (int i = 0; i < respostas.size(); i++) {
+                String resposta = respostas.get(i).get(categoriaIndex);
+                if (resposta != null && resposta.startsWith(String.valueOf(letra))) {
+                    if (respostasUnicas.contains(resposta)) {
+                        // Resposta única
+                        pontuacoes[i] += 10;
+                    } else if (respostasDuplicadas.contains(resposta)) {
+                        // Resposta duplicada
+                        pontuacoes[i] += 5;
+                    }
+                }
+            }
+            List<Integer> ranking = new ArrayList<>();
+            for (int i = 0; i < pontuacoes.length; i++) {
+                ranking.add(i);
+            }
+            ranking.sort((i1, i2) -> Integer.compare(pontuacoes[i2], pontuacoes[i1]));
+    
+            // Exibe o ranking
+            System.out.println("\nRanking Final:");
+            for (int i = 0; i < ranking.size(); i++) {
+                int idx = ranking.get(i);
+                System.out.println((i + 1) + ". " + jogadores.get(idx).getNome() + ": " + pontuacoes[idx] + " ponto(s)");
+            }
         }
     }
+                   
+        }
+    }
+}
